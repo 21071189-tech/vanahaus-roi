@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<!-- saved from url=(0095)file:///C:/Users/Vrushabh%20Pradhan/OneDrive/VANAHAUS%202026/vanahaus_roi_calculator%20(1).html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#2D5226">
+<title>Vanahaus | ROI Calculator</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-dark:  #2D5226;
+    --green-mid:   #3D6B35;
+    --green-light: #8FAE7A;
+    --green-pale:  #EBF2E6;
+    --green-faint: #F3F8F0;
+    --terra:       #A6714E;
+    --terra-light: #F5EDE6;
+    --cream:       #F8F5F0;
+    --charcoal:    #1E2A1A;
+    --gray:        #6B7566;
+    --gray-light:  #B0B8A8;
+    --white:       #FFFFFF;
+    --border:      rgba(61,107,53,0.15);
+    --shadow:      0 2px 16px rgba(45,82,38,0.10);
+  }
+
+  html, body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--green-dark);
+    padding: 20px 20px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .logo-wrap { flex-shrink: 0; }
+  .logo-wrap svg { width: 46px; height: 46px; display: block; }
+  .header-text { flex: 1; min-width: 0; }
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: 0.01em;
+  }
+  .brand-name em { color: var(--green-light); font-style: normal; }
+  .brand-sub {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-top: 2px;
+  }
+  .header-pill {
+    background: var(--terra);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 11px;
+    border-radius: 99px;
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content { padding: 20px 16px 32px; max-width: 680px; margin: 0 auto; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid var(--green-pale);
+  }
+
+  /* ── INPUTS CARD ── */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  /* ── MODEL TABS ── */
+  .model-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .model-tab {
+    padding: 10px 6px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--green-faint);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray);
+    text-align: center;
+    line-height: 1.4;
+    transition: all 0.18s;
+    -webkit-tap-highlight-color: transparent;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .model-tab .tab-sub { font-size: 10px; font-weight: 400; display: block; margin-top: 2px; color: var(--gray-light); }
+  .model-tab.active {
+    background: var(--green-dark);
+    border-color: var(--green-dark);
+    color: #fff;
+  }
+  .model-tab.active .tab-sub { color: var(--green-light); }
+
+  /* ── SLIDER GROUPS ── */
+  .slider-group { margin-bottom: 20px; }
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .slider-label { font-size: 13px; font-weight: 500; color: var(--charcoal); }
+  .slider-val {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--green-mid);
+    font-variant-numeric: tabular-nums;
+  }
+  .slider-ends {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--gray-light);
+    margin-top: 5px;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 5px;
+    border-radius: 99px;
+    background: var(--green-pale);
+    outline: none;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--green-mid);
+    border: 3px solid var(--white);
+    box-shadow: 0 1px 6px rgba(45,82,38,0.30);
+    cursor: pointer;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--green-mid);
+    border: 3px solid var(--white);
+    box-shadow: 0 1px 6px rgba(45,82,38,0.30);
+    cursor: pointer;
+  }
+
+  /* ── TOGGLE ── */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 14px;
+    background: var(--green-faint);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .toggle-label { font-size: 13px; font-weight: 500; color: var(--charcoal); flex: 1; padding-right: 12px; }
+  .switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .track {
+    position: absolute;
+    inset: 0;
+    background: var(--gray-light);
+    border-radius: 99px;
+    cursor: pointer;
+    transition: background 0.22s;
+  }
+  .switch input:checked + .track { background: var(--green-mid); }
+  .thumb {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 18px; height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    transition: transform 0.22s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+  }
+  .switch input:checked ~ .thumb { transform: translateX(20px); }
+
+  /* ── RESULTS CARD ── */
+  .results-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  /* Hero payback */
+  .hero-payback {
+    background: var(--green-dark);
+    padding: 20px;
+    text-align: center;
+  }
+  .hero-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 6px;
+  }
+  .hero-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 500;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .hero-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+  }
+
+  /* Result grid */
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .result-cell {
+    padding: 16px 18px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .result-cell:nth-child(even) { border-right: none; }
+  .result-cell:nth-child(3),
+  .result-cell:nth-child(4) { border-bottom: none; }
+  .result-cell.terra { background: var(--terra-light); }
+  .cell-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 5px;
+  }
+  .cell-val {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--green-dark);
+    font-variant-numeric: tabular-nums;
+  }
+  .result-cell.terra .cell-val { color: var(--terra); }
+
+  /* Breakdown */
+  .breakdown { padding: 18px 20px; }
+  .breakdown-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 12px;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .bar-name { font-size: 12px; color: var(--charcoal); width: 100px; flex-shrink: 0; }
+  .bar-track {
+    flex: 1;
+    height: 8px;
+    background: var(--green-pale);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: var(--green-mid);
+    transition: width 0.35s ease;
+    min-width: 3px;
+  }
+  .bar-fill.t { background: var(--terra); }
+  .bar-amt {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray);
+    width: 66px;
+    text-align: right;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ROI badge */
+  .roi-strip {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: var(--green-pale);
+    border-top: 1px solid var(--border);
+  }
+  .roi-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--green-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .roi-circle span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+  }
+  .roi-text-title { font-size: 13px; font-weight: 600; color: var(--green-dark); }
+  .roi-text-sub { font-size: 11px; color: var(--gray); margin-top: 2px; }
+
+  /* ── CTA ── */
+  .cta-card {
+    background: var(--green-dark);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .cta-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .cta-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .cta-btn {
+    display: block;
+    width: 100%;
+    background: var(--terra);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: opacity 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cta-btn:active { opacity: 0.85; }
+
+  .contact-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .contact-btn {
+    flex: 1;
+    display: block;
+    background: rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.80);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 10px;
+    padding: 11px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .contact-btn:active { background: rgba(255,255,255,0.18); }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    font-size: 10px;
+    color: var(--gray-light);
+    line-height: 1.6;
+    padding: 0 4px;
+  }
+
+  /* Dividers between slider groups */
+  .divider { height: 1px; background: var(--border); margin: 4px 0 20px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-wrap">
+    <svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="23" cy="40" rx="14" ry="4.5" fill="#A6714E" opacity="0.6"></ellipse>
+      <circle cx="17" cy="20" r="11" fill="#8FAE7A" opacity="0.5"></circle>
+      <circle cx="30" cy="17" r="8.5" fill="#8FAE7A" opacity="0.4"></circle>
+      <path d="M11 30 L23 15 L35 30 Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round"></path>
+      <rect x="17" y="23" width="12" height="11" rx="1.5" fill="none" stroke="#FFFFFF" stroke-width="1.8"></rect>
+      <path d="M23 19 C23 19 20 22.5 23 25.5 C26 22.5 23 19 23 19Z" fill="#8FAE7A"></path>
+    </svg>
+  </div>
+  <div class="header-text">
+    <div class="brand-name"><em>Vana</em>haus</div>
+    <div class="brand-sub">Ready Spaces · ROI Calculator</div>
+  </div>
+  <div class="header-pill">B2B Tool</div>
+</div>
+
+<!-- MAIN -->
+<div class="content">
+
+  <!-- INPUTS -->
+  <div class="card">
+    <div class="section-label">Configure your investment</div>
+
+    <!-- Model selector -->
+    <div class="model-tabs">
+      <button class="model-tab active" onclick="selectModel(this,0)">
+        The Apex<span class="tab-sub">305 sq.ft</span>
+      </button>
+      <button class="model-tab" onclick="selectModel(this,1)">
+        Eco Summit<span class="tab-sub">541 sq.ft</span>
+      </button>
+      <button class="model-tab" onclick="selectModel(this,2)">
+        The Pinnacle<span class="tab-sub">277-344 sq.ft</span>
+      </button>
+    </div>
+
+    <!-- Unit cost -->
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label">Unit investment (Rs. Lakhs)</span>
+        <span class="slider-val" id="cost-val">12</span>
+      </div>
+      <input type="range" id="cost" min="8" max="30" step="0.5" value="12" oninput="update()">
+      <div class="slider-ends"><span>Rs. 8L</span><span>Rs. 30L</span></div>
+    </div>
+    <div class="divider"></div>
+
+    <!-- Units -->
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label">Number of units</span>
+        <span class="slider-val" id="units-val">3</span>
+      </div>
+      <input type="range" id="units" min="1" max="20" step="1" value="3" oninput="update()">
+      <div class="slider-ends"><span>1 unit</span><span>20 units</span></div>
+    </div>
+    <div class="divider"></div>
+
+    <!-- Nightly rate -->
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label">Nightly rate (Rs.)</span>
+        <span class="slider-val" id="rate-val">4,500</span>
+      </div>
+      <input type="range" id="rate" min="1500" max="15000" step="500" value="4500" oninput="update()">
+      <div class="slider-ends"><span>Rs. 1,500</span><span>Rs. 15,000</span></div>
+    </div>
+    <div class="divider"></div>
+
+    <!-- Occupancy -->
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label">Avg. occupancy rate</span>
+        <span class="slider-val" id="occ-val">65%</span>
+      </div>
+      <input type="range" id="occ" min="20" max="95" step="5" value="65" oninput="update()">
+      <div class="slider-ends"><span>20%</span><span>95%</span></div>
+    </div>
+    <div class="divider"></div>
+
+    <!-- AMC toggle -->
+    <div class="toggle-row">
+      <span class="toggle-label">Include Annual Maintenance (AMC) cost</span>
+      <label class="switch">
+        <input type="checkbox" id="amc" onchange="update()">
+        <span class="track"></span>
+        <span class="thumb"></span>
+      </label>
+    </div>
+
+    <!-- Operating cost -->
+    <div class="slider-group" style="margin-bottom:0;">
+      <div class="slider-header">
+        <span class="slider-label">Operating cost (% of revenue)</span>
+        <span class="slider-val" id="opex-val">30%</span>
+      </div>
+      <input type="range" id="opex" min="10" max="60" step="5" value="30" oninput="update()">
+      <div class="slider-ends"><span>10%</span><span>60%</span></div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-card">
+
+    <!-- Payback hero -->
+    <div class="hero-payback">
+      <div class="hero-label">Payback period</div>
+      <div class="hero-num" id="payback-num">1 yr 8 mo</div>
+      <div class="hero-sub" id="payback-sub">across 3 units at 65% occupancy</div>
+    </div>
+
+    <!-- Grid metrics -->
+    <div class="result-grid">
+      <div class="result-cell">
+        <div class="cell-label">Total investment</div>
+        <div class="cell-val" id="total-invest">Rs. 36.0L</div>
+      </div>
+      <div class="result-cell">
+        <div class="cell-label">Monthly revenue</div>
+        <div class="cell-val" id="monthly-rev">Rs. 2.6L</div>
+      </div>
+      <div class="result-cell terra">
+        <div class="cell-label">Annual net income</div>
+        <div class="cell-val" id="annual-net">Rs. 22.1L</div>
+      </div>
+      <div class="result-cell terra">
+        <div class="cell-label">5-year net return</div>
+        <div class="cell-val" id="five-yr">+Rs. 74.6L</div>
+      </div>
+    </div>
+
+    <!-- Breakdown bars -->
+    <div class="breakdown">
+      <div class="breakdown-title">Monthly breakdown (per unit)</div>
+      <div class="bar-row">
+        <span class="bar-name">Gross revenue</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-gross" style="width:100%"></div></div>
+        <span class="bar-amt" id="lbl-gross">Rs. 87.8K</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-name">Operating cost</span>
+        <div class="bar-track"><div class="bar-fill t" id="bar-opex" style="width:30%"></div></div>
+        <span class="bar-amt" id="lbl-opex">Rs. 26.3K</span>
+      </div>
+      <div class="bar-row" style="margin-bottom:0;">
+        <span class="bar-name">Net profit</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-net" style="width:70%"></div></div>
+        <span class="bar-amt" id="lbl-net">Rs. 61.4K</span>
+      </div>
+    </div>
+
+    <!-- ROI strip -->
+    <div class="roi-strip">
+      <div class="roi-circle"><span id="roi-pct">61%</span></div>
+      <div>
+        <div class="roi-text-title">Annual ROI on total investment</div>
+        <div class="roi-text-sub" id="roi-sub">Across all 3 units combined</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-card">
+    <div class="cta-headline">Book your factory slot</div>
+    <div class="cta-sub">45-day delivery · Zero excavation · 10-year structural warranty · GEM registered</div>
+    <a class="cta-btn" href="tel:+917020801756">Call Now: +91 70208 01756</a>
+    <div class="contact-row">
+      <a class="contact-btn" href="mailto:regisarchitects@gmail.com">Email Us</a>
+      <a class="contact-btn" href="https://wa.me/917020801756?text=Hi%2C%20I%20want%20a%20custom%20Vanahaus%20quote" target="_blank">WhatsApp</a>
+      <a class="contact-btn" href="https://www.vanahaus.in/" target="_blank">Website</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Estimates based on typical short-stay rental markets in India.<br>
+    Actual returns vary by location, season and management.<br>
+    © 2026 Vanahaus · Ready Spaces
+  </div>
+
+</div>
+
+<script>
+  var models = [
+    { cost: 12 },
+    { cost: 18 },
+    { cost: 15 }
+  ];
+
+  function selectModel(btn, idx) {
+    var tabs = document.querySelectorAll('.model-tab');
+    for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+    btn.classList.add('active');
+    document.getElementById('cost').value = models[idx].cost;
+    update();
+  }
+
+  function fmtRs(n) {
+    n = Math.round(n);
+    if (n >= 10000000) return 'Rs. ' + (n / 10000000).toFixed(1) + ' Cr';
+    if (n >= 100000)   return 'Rs. ' + (n / 100000).toFixed(1) + 'L';
+    if (n >= 1000)     return 'Rs. ' + (n / 1000).toFixed(1) + 'K';
+    return 'Rs. ' + n;
+  }
+
+  function fmtNum(n) {
+    return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function update() {
+    var costL   = parseFloat(document.getElementById('cost').value);
+    var units   = parseInt(document.getElementById('units').value);
+    var rate    = parseInt(document.getElementById('rate').value);
+    var occ     = parseInt(document.getElementById('occ').value);
+    var opexPct = parseInt(document.getElementById('opex').value);
+    var amc     = document.getElementById('amc').checked;
+
+    document.getElementById('cost-val').textContent  = costL;
+    document.getElementById('units-val').textContent = units;
+    document.getElementById('rate-val').textContent  = fmtNum(rate);
+    document.getElementById('occ-val').textContent   = occ + '%';
+    document.getElementById('opex-val').textContent  = opexPct + '%';
+
+    var costRs         = costL * 100000;
+    var totalInvest    = costRs * units;
+    var grossMoPerUnit = rate * 30 * (occ / 100);
+    var opexMoPerUnit  = grossMoPerUnit * (opexPct / 100);
+    var amcMoPerUnit   = amc ? (costRs * 0.01 / 12) : 0;
+    var netMoPerUnit   = grossMoPerUnit - opexMoPerUnit - amcMoPerUnit;
+    var grossMoAll     = grossMoPerUnit * units;
+    var netMoAll       = netMoPerUnit * units;
+    var netYearAll     = netMoAll * 12;
+    var fiveYrNet      = (netYearAll * 5) - totalInvest;
+    var paybackMo      = netMoAll > 0 ? Math.ceil(totalInvest / netMoAll) : 9999;
+    var roiPct         = totalInvest > 0 ? Math.round((netYearAll / totalInvest) * 100) : 0;
+
+    // Payback
+    if (paybackMo < 9999) {
+      if (paybackMo < 12) {
+        document.getElementById('payback-num').textContent = paybackMo + ' mo';
+      } else {
+        var yrs  = Math.floor(paybackMo / 12);
+        var mths = paybackMo % 12;
+        document.getElementById('payback-num').textContent = yrs + ' yr' + (mths > 0 ? ' ' + mths + ' mo' : '');
+      }
+    } else {
+      document.getElementById('payback-num').textContent = 'N/A';
+    }
+    document.getElementById('payback-sub').textContent =
+      'across ' + units + (units > 1 ? ' units' : ' unit') + ' at ' + occ + '% occupancy';
+
+    document.getElementById('total-invest').textContent = fmtRs(totalInvest);
+    document.getElementById('monthly-rev').textContent  = fmtRs(grossMoAll);
+    document.getElementById('annual-net').textContent   = fmtRs(netYearAll);
+    document.getElementById('five-yr').textContent      = (fiveYrNet >= 0 ? '+' : '') + fmtRs(fiveYrNet);
+
+    document.getElementById('roi-pct').textContent = roiPct + '%';
+    document.getElementById('roi-sub').textContent =
+      'Across all ' + units + (units > 1 ? ' units' : ' unit') + ' combined';
+
+    // Bars
+    var grossMax = grossMoPerUnit > 0 ? grossMoPerUnit : 1;
+    document.getElementById('bar-gross').style.width = '100%';
+    document.getElementById('lbl-gross').textContent = fmtRs(grossMoPerUnit);
+    var opexRatio = Math.min((opexMoPerUnit + amcMoPerUnit) / grossMax, 1);
+    document.getElementById('bar-opex').style.width  = Math.round(opexRatio * 100) + '%';
+    document.getElementById('lbl-opex').textContent  = fmtRs(opexMoPerUnit + amcMoPerUnit);
+    var netRatio = Math.max(0, Math.min(netMoPerUnit / grossMax, 1));
+    document.getElementById('bar-net').style.width   = Math.round(netRatio * 100) + '%';
+    document.getElementById('lbl-net').textContent   = fmtRs(netMoPerUnit);
+  }
+
+  update();
+</script>
+
+
+</body></html>
